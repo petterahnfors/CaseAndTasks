@@ -1,16 +1,77 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
+<?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <title>TODO supply a title</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Aktiva Ärenden</title>
+        <link rel= "stylesheet" href= "style.css"> </link>
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"></link>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato"> </link>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat"></link>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
+    </h:head>
+    <h:body>
+        <f:view>
+            <h1>Fiktiva AB</h1> 
+        </f:view>
+        
+        <div class="w3-top"> 
+  <div class="w3-bar w3-red w3-card w3-left-align w3-large">
+    <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-red" href="javascript:void(0);" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
+    <a href="index.xhtml" class="w3-bar-item w3-button w3-padding-large w3-white">Hem</a>
+    <a href="AktivaÄrenden.xhtml" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Aktiva ärenden</a>
+    <a href="AvslutadeÄrenden.xhtml" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Avslutade ärenden</a>
+    <a href="NyttÄrende.xhtml" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Nytt ärende</a>
+   
+    </div>
+        </div>
+        <h:form>
+           
+        </h:form>
+        <h:form>
+             <font size ="3" face="" color="black"> PersonalNr:</font> 
+             <h:inputText> </h:inputText>
+             <h:commandButton value= "Hämta"> </h:commandButton>
+           
+        </h:form>
+            <h:form> 
+                <p>Avslutade ärenden:</p> 
+                <h:dataTable value="#{caseAndTaskBean.getActiveTasks}" var="item">
+                    <h:column> 
+                        <f:facet name="header">ÄrendeNr</f:facet>
+                    </h:column>    
+                    <h:column> 
+                        <f:facet name="header">Arbetsuppgift</f:facet>
+                    </h:column> 
+                    <h:column> 
+                        <f:facet name="header">Kommentar</f:facet>
+                        
+                    </h:column>    
+                    <h:column> 
+                        <f:facet name="header">Budgeterad tid</f:facet>
+                    </h:column> 
+                    <h:column> 
+                        <f:facet name="header">Förbrukad tid</f:facet>
+                        
+                    </h:column>    
+                    <h:column> 
+                        <f:facet name="header">Datum registerat</f:facet>
+                    </h:column> 
+                    <h:column> 
+                        <f:facet name="header">Datum avslutat</f:facet>
+                    </h:column>    
+                    <h:column> 
+                        <h:form> 
+                            <h:commandButton value="Uppdatera"> 
+                            </h:commandButton>
+                        
+                    </h:form>    
+                </h:column> 
+        </h:dataTable>
+                   </h:form>
+          
+         
+    </h:body>
 </html>

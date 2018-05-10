@@ -13,7 +13,7 @@
     </h:head>
     <h:body>
         <f:view>
-            <h1 class= "title">Fiktiva AB</h1> 
+            <h1>Fiktiva AB</h1> 
         </f:view>
         
         <div class="w3-top"> 
@@ -26,14 +26,13 @@
    
     </div>
         </div>
-        
         <h:form>
             &nbsp;
         </h:form>
         <h:form>
-           <font size ="3" face="" color="black"> PersonalNr:</font> 
-           
-    <h:inputText></h:inputText><h:commandButton value="Hämta"></h:commandButton>
+             <font size ="3" face="" color="black"> PersonalNr:</font> 
+             <h:inputText> </h:inputText>
+             <h:commandButton value= "Hämta"> </h:commandButton>
            
         </h:form>
             <h:form> 
@@ -41,21 +40,20 @@
                 <h:dataTable value="#{caseAndTaskBean.getActiveTasks}" var="item">
                     <h:column> 
                         <f:facet name="header">ÄrendeNr</f:facet>
-                    
                     </h:column>    
                     <h:column> 
                         <f:facet name="header">Arbetsuppgift</f:facet>
                     </h:column> 
                     <h:column> 
                         <f:facet name="header">Kommentar</f:facet>
-                        <input type="text" name="Kommentar" value="" size="15" />
+                        
                     </h:column>    
                     <h:column> 
                         <f:facet name="header">Budgeterad tid</f:facet>
                     </h:column> 
                     <h:column> 
                         <f:facet name="header">Förbrukad tid</f:facet>
-                        <input type="text" name="Förbrukad tid" value="" />
+                        
                     </h:column>    
                     <h:column> 
                         <f:facet name="header">Datum registerat</f:facet>

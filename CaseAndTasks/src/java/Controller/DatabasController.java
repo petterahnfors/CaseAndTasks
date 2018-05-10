@@ -54,8 +54,14 @@ public class DatabasController extends CaseObservable{
     }
     
     public void connectToDb() throws SQLException {
-        con = DriverManager.getConnection( host, username, password );
-        
+        if (con == null) {
+            try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection( host, username, password );
+            } catch(ClassNotFoundException e) {
+                System.out.println("Could not find SQL class");
+            }
+        }
     }
     
     public void closeDbConnection() throws SQLException {
@@ -141,7 +147,7 @@ public class DatabasController extends CaseObservable{
         closeDbConnection();
         return lstCase;
     }
-    
+    //Hämtar ett ärende 
     public List<Case> getCase(String caseNr) throws SQLException{
        List<Case> lstCase = new ArrayList<>();
        ResultSet rs = null;
@@ -205,6 +211,7 @@ public class DatabasController extends CaseObservable{
         stmt.executeUpdate(update);        
         closeDbConnection();
     }
+     //Hämtar ett ärendes kategori
      public void getCategoryForCase(int caseNr) throws SQLException {
         connectToDb(); 
         Statement stmt =(Statement)con.createStatement();
@@ -222,7 +229,30 @@ public class DatabasController extends CaseObservable{
         stmt.executeUpdate(update);
         closeDbConnection();
      }
-     
+     //Hämta alla arbetsuppgifter beroende på status
+    public List<Tasks> getActiveTasks(boolean status) throws SQLException {
+        List<Tasks> lstTasks = new ArrayList<>();
+        ResultSet rs = null;
+        connectToDb();
+        Statement stmt = con.createStatement();
+        String sql1 = "SELECT * FROM arbetsuppgift WHERE NOT status = 'Avslutat'";
+        String sql2 = "SELECT * FROM arbetsuppgift";
+        if (status) {
+            rs = stmt.executeQuery(sql2);    
+        }
+        else {
+            rs = stmt.executeQuery(sql1);
+        }
+        while (rs.next()) {
+            lstTasks.add(new Tasks(rs.getInt("taskNr"), rs.getInt("caseNr"), rs.getString("description"), rs.getString("taskStatus"), rs.getDouble("timeBudget"), rs.getInt("personalNr"), rs.getDouble("timeUsed"), rs.getString("commment"), rs.getString("attestedBy") ));
+        }
+        closeDbConnection();
+        return lstTasks;
+    }
+
+    public List<Tasks> getActiveTasks() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
          
      }
      

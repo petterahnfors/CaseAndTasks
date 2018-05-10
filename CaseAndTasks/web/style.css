@@ -12,3 +12,29 @@ and open the template in the editor.
     text-align: center;
     color: blueviolet;
 }
+
+ .tab {
+    margin-left: 10em;
+    }
+
+ .bigtab {
+     margin-left: 15em;    
+    }
+    
+    .center {
+        text-align: center; 
+    }    
+    
+ .bold {
+     font-weight: bold; 
+     
+    }
+ .linebreak {
+     line-break: normal;    
+ }  
+
+ .uppermarginal {
+     margin-top: 2em; 
+ } 
+ 
+ 

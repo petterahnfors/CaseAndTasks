@@ -5,14 +5,17 @@
  */
 package Bean;
 
-
 import Controller.DatabasController;
+import Model.Case;
 import Model.Tasks;
+import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.List;
-import javax.enterprise.context.SessionScoped;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 
 /**
  *
@@ -22,7 +25,7 @@ import javax.faces.bean.ManagedBean;
 @SessionScoped
 
 public class CaseAndTasksBean implements Serializable{
- 
+    @ManagedProperty(value="#{param.id}")
     private int taskNr; 
     private int caseNr;
     private String description; 
@@ -89,7 +92,7 @@ public class CaseAndTasksBean implements Serializable{
     
     public List<Tasks> getActiveTasks() throws SQLException {
     init(); 
-    return dataController.getActiveTasks();
+    return dataController.getActiveTasks(false);
     }
     
     

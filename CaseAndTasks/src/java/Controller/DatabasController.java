@@ -235,8 +235,8 @@ public class DatabasController extends CaseObservable{
         ResultSet rs = null;
         connectToDb();
         Statement stmt = con.createStatement();
-        String sql1 = "SELECT * FROM arbetsuppgift WHERE NOT status = 'Avslutat'";
-        String sql2 = "SELECT * FROM arbetsuppgift";
+        String sql1 = "SELECT * FROM arbetsuppgift WHERE status NOT IN ('Påbörjad', 'Avslutat');";
+        String sql2 = "SELECT * FROM arbetsuppgift;";
         if (status) {
             rs = stmt.executeQuery(sql2);    
         }
@@ -244,15 +244,13 @@ public class DatabasController extends CaseObservable{
             rs = stmt.executeQuery(sql1);
         }
         while (rs.next()) {
-            lstTasks.add(new Tasks(rs.getInt("taskNr"), rs.getInt("caseNr"), rs.getString("description"), rs.getString("taskStatus"), rs.getDouble("timeBudget"), rs.getInt("personalNr"), rs.getDouble("timeUsed"), rs.getString("commment"), rs.getString("attestedBy") ));
+            lstTasks.add(new Tasks(rs.getInt("arbetsuppgNr"), rs.getInt("arendeNr"), rs.getString("beskrivning"), rs.getString("status"), rs.getDouble("budgeteradTid"), rs.getInt("personalNr"), rs.getDouble("tidforbrukad"), rs.getString("kommentar"), rs.getString("attesteradAv") ));
         }
         closeDbConnection();
         return lstTasks;
     }
 
-    public List<Tasks> getActiveTasks() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+
          
      }
      

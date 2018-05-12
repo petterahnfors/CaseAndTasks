@@ -589,7 +589,7 @@ public class CaseAndTask extends javax.swing.JFrame {
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nätverk", "Applikationer", "Användare", "Säkerhet" }));
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Aktiv", "Påbörjad", "Avslutad" }));
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pågående", "Påbörjad", "Avslutat" }));
 
         jLabel25.setText("Kategori:");
 
@@ -647,7 +647,7 @@ public class CaseAndTask extends javax.swing.JFrame {
             }
         });
 
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Aktiv", "Påbörjad", "Avslutad" }));
+        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pågående", "Påbörjad", "Avslutad" }));
 
         jLabel34.setText("Tidsbudget:");
 
@@ -954,7 +954,7 @@ public class CaseAndTask extends javax.swing.JFrame {
             arendeNr = jLabel4.getText();
             String instructions = jTextArea1.getText();
             String category = (String)jComboBox1.getSelectedItem();
-            String caseStatus = "Aktiv";
+            String caseStatus = "Pågående";
             mc.regCase(arendeNr, instructions, category, caseStatus);
             cc.saveCaseToDatabase(arendeNr, category, instructions, caseStatus);
             registerCase1.setVisible(false);
@@ -983,7 +983,7 @@ public class CaseAndTask extends javax.swing.JFrame {
               
                    double timeBudget = Double.parseDouble(tid);
                    int taskNr = cc.getNewTaskNr();
-                   String uppgStatus = "aktiv";
+                   String uppgStatus = "Pågående";
                    int caseNr = Integer.parseInt(arendeNr);   
                    cc.addTaskToDatabase(taskNr, caseNr, taskDesc, timeBudget, uppgStatus);
                    
@@ -1072,7 +1072,7 @@ public class CaseAndTask extends javax.swing.JFrame {
 				   
             double timeBudget = Double.parseDouble(tid);
             int taskNr = cc.getNewTaskNr();
-            String uppgStatus = "Aktiv";
+            String uppgStatus = "Pågående";
             int caseNr = Integer.parseInt(arendeNr);   
             cc.addTaskToDatabase(taskNr, caseNr, taskDesc, timeBudget, uppgStatus);
             loadTaskListUpdatePage(caseNr);

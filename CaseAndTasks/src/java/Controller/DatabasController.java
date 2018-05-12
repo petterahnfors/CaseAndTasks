@@ -66,6 +66,7 @@ public class DatabasController extends CaseObservable{
     
     public void closeDbConnection() throws SQLException {
         con.close();
+        con = null;
     }
 
     //Hämtar högsta registrerade ärendenumret och returnerar det + 1
@@ -126,7 +127,40 @@ public class DatabasController extends CaseObservable{
         closeDbConnection();
         return lstTasks;
     }
+    //Hämtar kompetens tillhörande ett personalnummer
+    public String getCompetens(int personalNr) throws SQLException {
+        String competens = "";
+        ResultSet rs = null;
+        connectToDb();
+        Statement stmt = con.createStatement();
+        String sql = "SELECT kompetens FROM personal WHERE personalNr =" + personalNr +";";
+        rs = stmt.executeQuery(sql);
+         while (rs.next()) {
+             competens = rs.getString("kompetens");
+         }
+        closeDbConnection();
+        return competens;
+    }
     
+    //Hämtar namn tillhörande ett personalnummer
+        public String getName(int personalNr) throws SQLException {
+        String name = "";
+        String fName = "";
+        String lName = "";
+        ResultSet rs = null;
+        connectToDb();
+        Statement stmt = con.createStatement();
+        String sql = "SELECT fornamn, efternamn FROM personal WHERE personalNr =" + personalNr +";";
+        rs = stmt.executeQuery(sql);
+         while (rs.next()) {
+             fName = rs.getString("fornamn");
+             lName = rs.getString("efternamn");
+         }
+        closeDbConnection();
+        name = fName + lName;
+        return name;
+    }
+        
     //Hämta alla ärenden beroende på status
     public List<Case> getCases(boolean status) throws SQLException {
         List<Case> lstCase = new ArrayList<>();
@@ -136,10 +170,10 @@ public class DatabasController extends CaseObservable{
         String sql1 = "SELECT * FROM arende WHERE NOT status = 'Avslutat'";
         String sql2 = "SELECT * FROM arende";
         if (status) {
-            rs = stmt.executeQuery(sql2);    
+            rs = stmt.executeQuery(sql1);    
         }
         else {
-            rs = stmt.executeQuery(sql1);
+            rs = stmt.executeQuery(sql2);
         }
         while (rs.next()) {
             lstCase.add(new Case(rs.getInt("arendeNr"), rs.getString("kategori"), rs.getString("status"), rs.getString("instruktioner")));
@@ -174,9 +208,7 @@ public class DatabasController extends CaseObservable{
     }
     //Lägg till arbetsuppgift i databas
     public void addTaskToDatabase(int taskNr, int caseNr, String taskDesc, double timeBudget, String uppgStatus) throws SQLException{
-        System.out.println("3");
         connectToDb();
-        System.out.println("4");
         Statement stmt =(Statement)con.createStatement();
         String insert = "INSERT INTO arbetsuppgift (arbetsuppgNr, arendeNr, beskrivning, budgeteradTid, tidforbrukad, status) VALUES " + "("+taskNr+", "+caseNr+", '"+taskDesc+"', "+timeBudget+", 0, '"+uppgStatus+"');";
         System.out.println(insert);
@@ -211,6 +243,16 @@ public class DatabasController extends CaseObservable{
         stmt.executeUpdate(update);        
         closeDbConnection();
     }
+    //Metod för att uppdatera arbetsuppgift anpassat för webgränssnitt
+    public void updateTaskOnWebPage(int taskNr, double timeUsed, String taskStatus, String comment) throws SQLException {
+        connectToDb();
+        Statement stmt =(Statement)con.createStatement();
+        String update = "UPDATE arbetsuppgift SET tidforbrukad ="+ timeUsed +", status ='" + taskStatus + "', kommentar ='" + comment + "' WHERE arbetsuppgNr =" + taskNr + ";";
+        System.out.println(update);
+        stmt.executeUpdate(update);        
+        closeDbConnection();
+    }
+     
      //Hämtar ett ärendes kategori
      public void getCategoryForCase(int caseNr) throws SQLException {
         connectToDb(); 
@@ -221,6 +263,15 @@ public class DatabasController extends CaseObservable{
         closeDbConnection();
      }
      
+     public void asignTask(int taskNr, int personalNr) throws SQLException {
+        connectToDb();
+        Statement stmt =(Statement)con.createStatement();
+        String update = "UPDATE arbetsuppgift SET personalNr ='" + personalNr + "' WHERE arbetsuppgNr =" + taskNr +";";
+        System.out.println(update);
+        stmt.executeUpdate(update);
+        closeDbConnection();  
+     }
+     //Attestera arbetsuppgift
      public void attestTask(int taskNr, String name) throws SQLException{
         connectToDb();
         Statement stmt =(Statement)con.createStatement();
@@ -229,6 +280,9 @@ public class DatabasController extends CaseObservable{
         stmt.executeUpdate(update);
         closeDbConnection();
      }
+     
+
+     
      //Hämta alla arbetsuppgifter beroende på status
     public List<Tasks> getActiveTasks(boolean status) throws SQLException {
         List<Tasks> lstTasks = new ArrayList<>();
@@ -243,6 +297,42 @@ public class DatabasController extends CaseObservable{
         else {
             rs = stmt.executeQuery(sql1);
         }
+        while (rs.next()) {
+            lstTasks.add(new Tasks(rs.getInt("arbetsuppgNr"), rs.getInt("arendeNr"), rs.getString("beskrivning"), rs.getString("status"), rs.getDouble("budgeteradTid"), rs.getInt("personalNr"), rs.getDouble("tidforbrukad"), rs.getString("kommentar"), rs.getString("attesteradAv") ));
+        }
+        closeDbConnection();
+        return lstTasks;
+    }
+    
+         //Hämta alla arbetsuppgifter beroende på status
+    public List<Tasks> getTasksForPerson(boolean status, int personalNr) throws SQLException {
+        List<Tasks> lstTasks = new ArrayList<>();
+        ResultSet rs = null;
+        connectToDb();
+        Statement stmt = con.createStatement();
+        String sql1 = "SELECT * FROM arbetsuppgift WHERE status NOT IN ('Avslutat') AND personalNr =" + personalNr +";";
+        String sql2 = "SELECT * FROM arbetsuppgift;";
+        if (status) {
+            rs = stmt.executeQuery(sql2);    
+        }
+        else {
+            rs = stmt.executeQuery(sql1);
+        }
+        while (rs.next()) {
+            lstTasks.add(new Tasks(rs.getInt("arbetsuppgNr"), rs.getInt("arendeNr"), rs.getString("beskrivning"), rs.getString("status"), rs.getDouble("budgeteradTid"), rs.getInt("personalNr"), rs.getDouble("tidforbrukad"), rs.getString("kommentar"), rs.getString("attesteradAv") ));
+        }
+        closeDbConnection();
+        return lstTasks;
+    }
+    
+             //Hämta alla ej påbörjade arbetsuppgifter beroende på status
+    public List<Tasks> getNewTasksForPersonCompetens(int personalNr) throws SQLException {
+        List<Tasks> lstTasks = new ArrayList<>();
+        ResultSet rs = null;
+        connectToDb();
+        Statement stmt = con.createStatement();
+        String sql1 = "Select ar.arbetsuppgNr, ar.arendeNr, ar.beskrivning, ar.status, ar.budgeteradTid, ar.personalNr, ar.tidforbrukad, ar.kommentar, ar.attesteradAv, a.kategori FROM arbetsuppgift ar join arende a on a.arendeNr = ar.arendeNr where ar.status NOT IN ('Avslutat', 'Påbörjad') AND a.kategori = (SELECT kompetens from personal where personalNr =" + personalNr +") AND (ar.personalNr IS NULL);";
+        rs = stmt.executeQuery(sql1);
         while (rs.next()) {
             lstTasks.add(new Tasks(rs.getInt("arbetsuppgNr"), rs.getInt("arendeNr"), rs.getString("beskrivning"), rs.getString("status"), rs.getDouble("budgeteradTid"), rs.getInt("personalNr"), rs.getDouble("tidforbrukad"), rs.getString("kommentar"), rs.getString("attesteradAv") ));
         }

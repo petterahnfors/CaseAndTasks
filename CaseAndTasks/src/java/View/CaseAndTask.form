@@ -999,9 +999,9 @@
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                   <StringArray count="3">
-                    <StringItem index="0" value="Aktiv"/>
+                    <StringItem index="0" value="P&#xe5;g&#xe5;ende"/>
                     <StringItem index="1" value="P&#xe5;b&#xf6;rjad"/>
-                    <StringItem index="2" value="Avslutad"/>
+                    <StringItem index="2" value="Avslutat"/>
                   </StringArray>
                 </Property>
               </Properties>
@@ -1112,7 +1112,7 @@
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                   <StringArray count="3">
-                    <StringItem index="0" value="Aktiv"/>
+                    <StringItem index="0" value="P&#xe5;g&#xe5;ende"/>
                     <StringItem index="1" value="P&#xe5;b&#xf6;rjad"/>
                     <StringItem index="2" value="Avslutad"/>
                   </StringArray>

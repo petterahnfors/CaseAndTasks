@@ -1,0 +1,129 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+    <title> Nytt ärende </title>
+        <link rel= "stylesheet" href= "style.css"> </link>
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"></link>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato"> </link>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat"></link>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
+    
+    <style>
+    body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
+    .w3-bar,h1,button {font-family: "Montserrat", sans-serif}
+    .fa-anchor,.fa-coffee {font-size:200px}
+    </style>
+
+
+        
+<!-- Navbar -->
+<div class="w3-top">
+  <div class="w3-bar w3-grey w3-card w3-left-align w3-large">
+    <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-red" href="javascript:void(0);" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
+    <a href="index.xhtml" class="w3-bar-item w3-button w3-padding-large w3-white">Hem</a>
+    <a href="AktivaArenden.xhtml" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Nya arbetsuppgifter</a>
+    <a href="MinaArenden.xhtml" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Mina arbetsuppgifter</a>
+    
+  </div>
+</div>
+    
+    <!-- Header -->
+    <header class="w3-container w3-light-grey w3-center" style="padding:50px 16px">
+    <p class="w3-xlarge bold uppermarginal ">Fiktiva AB</p>
+     <p class="w3-large">Mina öppna ärenden</p>
+        <f:view>
+            Inloggad som: <h:outputLabel value="#{CaseAndTasksBean.name}" />
+        </f:view>
+    </header>
+     </h:head>
+    <h:body>   
+            <f:view>
+                <h:form>
+                <center> 
+                    <BR></BR>
+                    <h:dataTable value="#{CaseAndTasksBean.tasksForPerson}" var="item"
+                             styleClass="table" headerClass="header" rowClasses="oddRows,evenRows">
+                <h:column>
+                    <f:facet name="header">Task Nr</f:facet>
+                    #{item.taskNr}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Case Nr</f:facet>
+                    #{item.caseNr}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Description</f:facet>
+                    #{item.description}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">pers nr</f:facet>
+                    #{item.personalNr}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Attested by</f:facet>
+                    #{item.attestedBy}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Taskstatus</f:facet>
+                    #{item.taskStatus}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Time budget</f:facet>
+                    #{item.timebudget}
+                </h:column>
+                <h:column>
+                    
+                    <f:facet name="header">Time used</f:facet>
+                    <h:inputText binding="#{inputTime}" value="#{item.timeUsed}"></h:inputText>
+                    
+                </h:column>
+                <h:column>
+                    
+                    <f:facet name="header">Taskstatus</f:facet>
+                        <h:selectOneMenu binding="#{inputStatus}" value = "#{item.taskStatus}"> 
+                        <f:selectItem itemValue = "Pågående" itemLabel = "Pågående" /> 
+                        <f:selectItem itemValue = "Påbörjad" itemLabel = "Påbörjad" /> 
+                        <f:selectItem itemValue = "Avslutat" itemLabel = "Avslutat" />
+                        <f:selectItem itemValue = "Ej avslutat" itemLabel = "Ej avslutat" />
+                        </h:selectOneMenu>
+                    
+                </h:column>        
+                <h:column>
+                    
+                        <f:facet name="header">Comment</f:facet>
+                        <h:inputText binding="#{inputComment}" value="#{item.comment}"></h:inputText>
+                        
+                        
+                </h:column>                        
+                <h:column>
+                    
+                        <f:facet name="header">Update</f:facet>
+                        <h:commandButton action="#{CaseAndTasksBean.updateTask(item.taskNr, inputTime.value, inputStatus.value, inputComment)}" value="Update">
+                        </h:commandButton>
+                    
+                </h:column>
+            </h:dataTable>
+                    <BR></BR>
+                </center>
+          </h:form>      
+        </f:view>     
+   </h:body>  
+      <!-- Footer -->
+<footer class="w3-container w3-padding-64 w3-grey w3-center w3-opacity">  
+  
+    <h1 class="w3-margin w3-xlarge"></h1>
+
+    <div class=" w3-padding-32">
+    <img src= "light-bulb.png" width= "20" height= "20" alt="Light bulb"/> 
+    <p class="bold">Teknisk support</p>
+     <p> Telefonnummer: +4670-400 00 00 </p>
+      <p> Mail: fiktiva.support@fiktiva.se  </p>
+ </div>
+</footer>              
+    
+</html>

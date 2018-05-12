@@ -23,10 +23,10 @@
 <div class="w3-top">
   <div class="w3-bar w3-grey w3-card w3-left-align w3-large">
     <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-red" href="javascript:void(0);" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
-    <a href="faces/index.xhtml" class="w3-bar-item w3-button w3-padding-large w3-white">Hem</a>
-    <a href="faces/AktivaÄrenden.xhtml" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Aktiva ärenden</a>
-    <a href="faces/AvslutadeÄrenden.xhtml" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Avslutade ärenden</a>
-    <a href="faces/NyttÄrende.xhtml" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Nytt ärende</a>
+    <a href="index.xhtml" class="w3-bar-item w3-button w3-padding-large w3-white">Hem</a>
+    <a href="AktivaArenden.xhtml" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Nya arbetsuppgifter</a>
+    <a href="MinaArenden.xhtml" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Mina arbetsuppgifter</a>
+    
   </div>
 </div>
     
@@ -35,17 +35,25 @@
     <header class="w3-container w3-light-grey w3-center" style="padding:50px 16px">
     <p class="w3-xlarge bold uppermarginal">Fiktiva AB</p>
      <p class="w3-large">Aktiva ärenden</p>
+        <f:view>
+            Inloggad som: <h:outputLabel value="#{CaseAndTasksBean.name}" />
+        </f:view>
+    
     </header>
     
     </h:head>
     <h:body>
 
         <BR></BR>
+        
+        
         <BR></BR>
+        
+        
 
             <f:view>
                 <center> 
-                <h:dataTable value="#{CaseAndTasksBean.activeTasks}" var="item"
+                    <h:dataTable value="#{CaseAndTasksBean.newTasksForPersonCompetens}" var="item"
                              styleClass="table" headerClass="header" rowClasses="oddRows,evenRows">
                 <h:column>
                     <f:facet name="header">Task Nr</f:facet>
@@ -85,8 +93,7 @@
                 </h:column>
                 <h:column>
                     <h:form>
-                        <h:commandButton  value="Välj">
-                            
+                        <h:commandButton action="#{CaseAndTasksBean.asignTask(item.taskNr)}" value="Välj">
                         </h:commandButton>
                     </h:form>
                 </h:column>

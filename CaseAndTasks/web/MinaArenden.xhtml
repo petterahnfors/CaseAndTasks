@@ -68,10 +68,7 @@
                     <f:facet name="header">Attested by</f:facet>
                     #{item.attestedBy}
                 </h:column>
-                <h:column>
-                    <f:facet name="header">Taskstatus</f:facet>
-                    #{item.taskStatus}
-                </h:column>
+
                 <h:column>
                     <f:facet name="header">Time budget</f:facet>
                     #{item.timebudget}
@@ -79,31 +76,35 @@
                 <h:column>
                     
                     <f:facet name="header">Time used</f:facet>
-                    <h:inputText binding="#{inputTime}" value="#{item.timeUsed}"></h:inputText>
+                    <h:outputText value="#{item.timeUsed}    "/>  
+                    <h:inputText binding="#{inputTime}" ></h:inputText>
                     
                 </h:column>
                 <h:column>
-                    
+                    <center>
                     <f:facet name="header">Taskstatus</f:facet>
-                        <h:selectOneMenu binding="#{inputStatus}" value = "#{item.taskStatus}"> 
+                    <h:outputText value="  #{item.taskStatus}    "/>  
+                    <h:selectOneMenu binding ="#{inputStatus}">
                         <f:selectItem itemValue = "Pågående" itemLabel = "Pågående" /> 
                         <f:selectItem itemValue = "Påbörjad" itemLabel = "Påbörjad" /> 
                         <f:selectItem itemValue = "Avslutat" itemLabel = "Avslutat" />
                         <f:selectItem itemValue = "Ej avslutat" itemLabel = "Ej avslutat" />
                         </h:selectOneMenu>
-                    
+                    </center>
                 </h:column>        
                 <h:column>
                     
                         <f:facet name="header">Comment</f:facet>
-                        <h:inputText binding="#{inputComment}" value="#{item.comment}"></h:inputText>
+                        <h:outputText value="#{item.comment}   "/>
+                          
+                        <h:inputText binding="#{inputComment}" ></h:inputText>
                         
                         
                 </h:column>                        
                 <h:column>
                     
                         <f:facet name="header">Update</f:facet>
-                        <h:commandButton action="#{CaseAndTasksBean.updateTask(item.taskNr, inputTime.value, inputStatus.value, inputComment)}" value="Update">
+                        <h:commandButton action="#{CaseAndTasksBean.updateTask(item.taskNr, inputTime.value, inputStatus.value, inputComment.value)}" value="Update">
                         </h:commandButton>
                     
                 </h:column>

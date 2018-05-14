@@ -6,41 +6,28 @@
 package Bean;
 
 import Controller.DatabasController;
-import Model.Case;
 import Model.Tasks;
 import javax.faces.bean.SessionScoped;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-
 import javax.faces.component.html.HtmlDataTable;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.inject.Named;
+//import javax.inject.Named;
 
 
 /**
  *
  * @author petter
  */
-//@Named(value = "CaseAndTasksBean")
 @ManagedBean(name="CaseAndTasksBean")
 @SessionScoped
 
 
 public class CaseAndTasksBean implements Serializable{
-    //@ManagedProperty(value="#{param.inputComment}")
-    private int taskNr; 
-    private int caseNr;
-    private String taskStatus; 
     private int personalNr;
-    private double timeUsed;
-    private String comment;
     private DatabasController dataController; 
     private String loginMessage;
     private String competens;
@@ -82,7 +69,7 @@ public class CaseAndTasksBean implements Serializable{
     public void setLoginMessage(String loginMessage) {
         this.loginMessage = loginMessage;
     }
-    //testa detta
+    //Hämtar data från aktiv rad i dataTable och tilldelar datan till myTask
     public void dataTableTask(){
         myTask = (Tasks) getTableTask().getRowData();
         int tNr = myTask.getTaskNr();
@@ -124,38 +111,6 @@ public class CaseAndTasksBean implements Serializable{
         this.competens = competens;
     }
 
-    public int getTaskNr() {
-        return taskNr;
-    }
-
-    public void setTaskNr(int taskNr) {
-        this.taskNr = taskNr;
-    }
-
-    public int getCaseNr() {
-        return caseNr;
-    }
-
-    public void setCaseNr(int caseNr) {
-        this.caseNr = caseNr;
-    }
-
-    public String getTaskStatus() {
-        return taskStatus;
-    }
-
-    public void setTaskStatus(String taskStatus) {
-        this.taskStatus = taskStatus;
-    }
-
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
 
     public int getPersonalNr() {
         return personalNr;
@@ -172,14 +127,19 @@ public class CaseAndTasksBean implements Serializable{
         this.personalNr = personalNr;
     }
 
-    public double getTimeUsed() {
-        return timeUsed;
-    }
-
-    public void setTimeUsed(double timeUsed) {
-        this.timeUsed = timeUsed;
+    //Metod för att ladda sidan mina ärenden
+    public void loadMyTasksPage() {
+       ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+       try {
+           initTable();
+           externalContext.redirect("MinaArenden.xhtml");
+     } catch (Exception e)
+       {
+           System.out.println(e);
+       }    
     }
     
+    //metod för att ladda sida med aktiva ärenden som ännu ingen person har blivit tilldelad. Listan tar hänsyn till inloggads kompetens.
     public void loadActivePage() {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
        try {
@@ -194,10 +154,10 @@ public class CaseAndTasksBean implements Serializable{
         
      } catch (Exception e)
        {
-           e.printStackTrace();
+           System.out.println(e);
        }
     }
-    
+    //Metod för att uppdatera uppgift i databasen
     public void updateTask(int taskNr, double timeUsed, String taskStatus, String comment) {
         init();
         try {
@@ -206,14 +166,14 @@ public class CaseAndTasksBean implements Serializable{
             System.out.println("Gick ej att uppdatera uppgiften" + ex.getMessage());
         }
     }
-    
+    //Metod för att hämta inloggad persons uppgifter
     public void getTasksForPerson() throws SQLException {
         init();
         initTable();
         myTasks = dataController.getTasksForPerson(false, personalNr);
     }
 
-    
+    //Metod för att hämta nya uppgifter
     public List<Tasks> getNewTasksForPersonCompetens() throws SQLException {
     init(); 
     initTable();
@@ -237,7 +197,7 @@ public class CaseAndTasksBean implements Serializable{
         init();
         initTable();
 }
-    //metod för att komma runt problematiken kring binding
+    //metod för att komma runt problematiken kring binding av dataTable som kräver ny instans
     public void initTable() {
         try {
             tableTask = new HtmlDataTable();

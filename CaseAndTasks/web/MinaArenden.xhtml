@@ -26,7 +26,9 @@
     <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-red" href="javascript:void(0);" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
     <a href="index.xhtml" class="w3-bar-item w3-button w3-padding-large w3-white">Hem</a>
     <a href="AktivaArenden.xhtml" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Nya arbetsuppgifter</a>
-    <a href="MinaArenden.xhtml" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Mina arbetsuppgifter</a>
+    <h:form><h:commandLink class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" value="Mina arbetsuppgifter" action="#{CaseAndTasksBean.loadMyTasksPage()}"/></h:form>
+    
+    
     
   </div>
 </div>

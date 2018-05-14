@@ -17,15 +17,21 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+
+import javax.faces.component.html.HtmlDataTable;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.inject.Named;
+
 
 /**
  *
  * @author petter
  */
+//@Named(value = "CaseAndTasksBean")
 @ManagedBean(name="CaseAndTasksBean")
 @SessionScoped
+
 
 public class CaseAndTasksBean implements Serializable{
     //@ManagedProperty(value="#{param.inputComment}")
@@ -39,6 +45,35 @@ public class CaseAndTasksBean implements Serializable{
     private String loginMessage;
     private String competens;
     private String name;
+    private HtmlDataTable tableTask;
+    private Tasks myTask = new Tasks();
+    private List <Tasks> myTasks;
+
+    public List<Tasks> getMyTasks() {
+        return myTasks;
+    }
+
+    public void setMyTasks(List<Tasks> myTasks) {
+        this.myTasks = myTasks;
+    }
+
+    public Tasks getMyTask() {
+        return myTask;
+    }
+
+    public void setMyTask(Tasks myTask) {
+        this.myTask = myTask;
+    }
+    
+    
+    public HtmlDataTable getTableTask() {
+        return tableTask;
+    }
+
+    public void setTableTask(HtmlDataTable tableTask) {
+        this.tableTask = tableTask;
+        
+    }
 
     public String getLoginMessage() {
         return loginMessage;
@@ -47,7 +82,18 @@ public class CaseAndTasksBean implements Serializable{
     public void setLoginMessage(String loginMessage) {
         this.loginMessage = loginMessage;
     }
-
+    //testa detta
+    public void dataTableTask(){
+        myTask = (Tasks) getTableTask().getRowData();
+        int tNr = myTask.getTaskNr();
+        double time = myTask.getTimeUsed();
+        String status = myTask.getTaskStatus();
+        String comm = myTask.getComment();
+        
+        System.out.println(time + " : " + status + " : " + comm);
+        updateTask(tNr, time, status, comm);
+    }
+    
     public String getName() {
         return name;
     }
@@ -141,6 +187,7 @@ public class CaseAndTasksBean implements Serializable{
             loginMessage = "Personalnummer eller kompetens kopplat till personalnumret saknas";
         }
         else{
+           getTasksForPerson();
            externalContext.redirect("AktivaArenden.xhtml");
            loginMessage = "";
         }
@@ -160,14 +207,16 @@ public class CaseAndTasksBean implements Serializable{
         }
     }
     
-    public List<Tasks> getTasksForPerson() throws SQLException {
+    public void getTasksForPerson() throws SQLException {
         init();
-        return dataController.getTasksForPerson(false, personalNr);
+        initTable();
+        myTasks = dataController.getTasksForPerson(false, personalNr);
     }
 
     
     public List<Tasks> getNewTasksForPersonCompetens() throws SQLException {
     init(); 
+    initTable();
     return dataController.getNewTasksForPersonCompetens(personalNr);
     }
     
@@ -176,6 +225,7 @@ public class CaseAndTasksBean implements Serializable{
         init();
         try {
             dataController.asignTask(taskNr, personalNr);
+            getTasksForPerson();
         } catch (SQLException ex) {
             System.out.println("Gick ej att tilldela uppgiften" + ex.getMessage());
         }
@@ -184,11 +234,23 @@ public class CaseAndTasksBean implements Serializable{
     // Skapar en ny instans av CaseAndTasksBean
     public CaseAndTasksBean() {
         loginMessage = "";
-        init(); 
+        init();
+        initTable();
 }
+    //metod för att komma runt problematiken kring binding
+    public void initTable() {
+        try {
+            tableTask = new HtmlDataTable();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+    
+    //ny instans av databasControllern
     public void init() {
         try { 
             dataController = new DatabasController();
+            
         } catch (SQLException ex) {
            System.out.println("Could not connect to database.");
         }

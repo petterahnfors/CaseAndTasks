@@ -42,49 +42,48 @@
      </h:head>
     <h:body>   
             <f:view>
-                <h:form>
+                <h:form id="minaTasks">
                 <center> 
                     <BR></BR>
-                    <h:dataTable value="#{CaseAndTasksBean.tasksForPerson}" var="item"
+                    <h:dataTable value="#{CaseAndTasksBean.myTasks}" var="myTask" binding="#{CaseAndTasksBean.tableTask}"
                              styleClass="table" headerClass="header" rowClasses="oddRows,evenRows">
-                <h:column>
+                <h:column id="kol1">
                     <f:facet name="header">Task Nr</f:facet>
-                    #{item.taskNr}
+                    #{myTask.taskNr}
                 </h:column>
-                <h:column>
+                        <h:column id="kol2">
                     <f:facet name="header">Case Nr</f:facet>
-                    #{item.caseNr}
+                    #{myTask.caseNr}
                 </h:column>
 
-                <h:column>
+                        <h:column id="kol3">
                     <f:facet name="header">Description</f:facet>
-                    #{item.description}
+                    #{myTask.description}
                 </h:column>
-                <h:column>
+                        <h:column id="kol4">
                     <f:facet name="header">pers nr</f:facet>
-                    #{item.personalNr}
+                    #{myTask.personalNr}
                 </h:column>
-                <h:column>
+                <h:column id="kol5">
                     <f:facet name="header">Attested by</f:facet>
-                    #{item.attestedBy}
+                    #{myTask.attestedBy}
                 </h:column>
 
-                <h:column>
+                <h:column id="kol6">
                     <f:facet name="header">Time budget</f:facet>
-                    #{item.timebudget}
+                    #{myTask.timebudget}
                 </h:column>
-                <h:column>
+                        <h:column id="kol7">
                     
                     <f:facet name="header">Time used</f:facet>
-                    <h:outputText value="#{item.timeUsed}    "/>  
-                    <h:inputText binding="#{inputTime}" ></h:inputText>
-                    
+
+                    <h:inputText id="time" value="#{myTask.timeUsed}" ></h:inputText>
+
                 </h:column>
-                <h:column>
+                        <h:column id="kol8">
                     <center>
                     <f:facet name="header">Taskstatus</f:facet>
-                    <h:outputText value="  #{item.taskStatus}    "/>  
-                    <h:selectOneMenu binding ="#{inputStatus}">
+                    <h:selectOneMenu id="meny" value="#{myTask.taskStatus}">
                         <f:selectItem itemValue = "Pågående" itemLabel = "Pågående" /> 
                         <f:selectItem itemValue = "Påbörjad" itemLabel = "Påbörjad" /> 
                         <f:selectItem itemValue = "Avslutat" itemLabel = "Avslutat" />
@@ -92,19 +91,15 @@
                         </h:selectOneMenu>
                     </center>
                 </h:column>        
-                <h:column>
-                    
+                        <h:column id="kol9">
                         <f:facet name="header">Comment</f:facet>
-                        <h:outputText value="#{item.comment}   "/>
-                          
-                        <h:inputText binding="#{inputComment}" ></h:inputText>
-                        
-                        
+                        <h:inputText id="comm" value="#{myTask.comment}" ></h:inputText>
                 </h:column>                        
-                <h:column>
-                    
+                        <h:column id="kol10">
+                      
                         <f:facet name="header">Update</f:facet>
-                        <h:commandButton action="#{CaseAndTasksBean.updateTask(item.taskNr, inputTime.value, inputStatus.value, inputComment.value)}" value="Update">
+                        <h:commandButton id="update" action="#{CaseAndTasksBean.dataTableTask()}"  value="Update">
+                                    
                         </h:commandButton>
                     
                 </h:column>
